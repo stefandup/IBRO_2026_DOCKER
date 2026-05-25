@@ -130,6 +130,8 @@ This repo is intentionally small so you can focus on the Docker and VS Code work
 
 Singularity usually starts in your current workspace. To test a folder that is outside this repo, create a separate output directory and bind it into the container.
 
+The point of running these scripts through Singularity is that the software dependencies live inside the `.sif` image instead of being installed on the host machine. This is especially useful on HPC systems, where Singularity is commonly available and users usually do not have root access to install system packages.
+
 In these examples, replace `<username>` with your Linux username.
 
 Note: some newer systems use the `apptainer` command instead of `singularity`. The command shape is the same.
@@ -158,6 +160,18 @@ List the mounted output folder from inside the container:
 ls -l /output_dir
 ```
 
+Run the test script from inside the container:
+
+```sh
+python scripts/my_test_script.py
+```
+
+Then inspect the example NIfTI file:
+
+```sh
+python scripts/inspect_nifti.py
+```
+
 Exit the container shell:
 
 ```sh
@@ -169,3 +183,12 @@ Back on the host, the same file should exist outside the workspace:
 ```sh
 ls -l /home/<username>/example_output
 ```
+
+You can also run the same scripts from outside the container with `singularity exec`. Run these commands from the repo root on the host:
+
+```sh
+singularity exec build/LittleUbuntu.sif python scripts/my_test_script.py
+singularity exec build/LittleUbuntu.sif python scripts/inspect_nifti.py
+```
+
+These scripts do not need the external output folder bind. The earlier bind example is there to show how the host filesystem can be mounted into the container. These commands still use the Python environment and installed packages from inside `build/LittleUbuntu.sif`; they just avoid opening an interactive shell first.
