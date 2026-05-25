@@ -4,6 +4,8 @@ This small repo is a starter project for learning how to create and work with Do
 
 The goal is to make the Docker workflow more transparent than only using Docker Desktop. Docker Desktop is still required, but VS Code, WSL, and Dev Containers let you see and control more of what is happening. It can be hard to understand what is actually going on when you use Singularity/Docker images. Often setting it up directly like this helps ones understanding tremendously, even if you use the docker GUI in the future.
 
+It can be quite confusing at first, so do play around with the bindings.
+
 ## Dependencies
 
 Install these tools before getting started:
