@@ -22,11 +22,13 @@ ENV PATH="/usr/local/venv/bin:$PATH"
 RUN pip install --upgrade pip && \
     pip install nibabel nilearn numpy pandas matplotlib PyQt6
 
-RUN echo 'export PS1="\[\033[01;32m\]\u@LittleUbuntu\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ "' >> /root/.bashrc
+RUN echo 'export PS1="\[\033[01;31m\]\u@LittleUbuntu\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ "' >> /root/.bashrc
 
 RUN mkdir /scripts
-COPY scripts/my_test_script.py /scripts/my_test_script.py
+COPY scripts/* /scripts/
 
-RUN chmod +x /scripts/my_test_script.py
+ENV PATH=/scripts/:$PATH
+
+RUN chmod +x /scripts/*.py
     
 WORKDIR /workspaces
