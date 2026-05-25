@@ -193,4 +193,6 @@ singularity exec build/LittleUbuntu.sif python scripts/my_test_script.py
 singularity exec build/LittleUbuntu.sif python scripts/inspect_nifti.py
 ```
 
+This is one of the main reasons we use containers: the container stores the full software environment, not just the script. That can include specific Python versions, old Python code, pinned packages, and large neuroimaging tools such as older FreeSurfer or FSL versions. Instead of rebuilding that fragile stack on every HPC system, we run the same image, which makes the analysis less likely to break and can dramatically shorten installation time.
+
 These scripts do not need the external output folder bind. The earlier bind example is there to show how the host filesystem can be mounted into the container. These commands still use the Python environment and installed packages from inside `build/LittleUbuntu.sif`; they just avoid opening an interactive shell first.
