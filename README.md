@@ -70,9 +70,8 @@ https://code.visualstudio.com/
 
 Install these VS Code extensions:
 
-- Dev Containers
 - WSL
-- Docker
+- Dev Containers by Microsoft
 
 ## Open This Repo in WSL
 
@@ -126,3 +125,47 @@ Docker Desktop gives you a visual interface, but Dev Containers make the build a
 - Rebuilding the container helps confirm that your setup is reproducible.
 
 This repo is intentionally small so you can focus on the Docker and VS Code workflow first.
+
+## Run Singularity with an External Output Folder
+
+Singularity usually starts in your current workspace. To test a folder that is outside this repo, create a separate output directory and bind it into the container.
+
+In these examples, replace `<username>` with your Linux username.
+
+Note: some newer systems use the `apptainer` command instead of `singularity`. The command shape is the same.
+
+Create an output folder outside the workspace:
+
+```sh
+mkdir -p /home/<username>/example_output
+```
+
+Open an interactive shell inside the image and mount that folder as `/output_dir`:
+
+```sh
+singularity shell -B /home/<username>/example_output:/output_dir build/LittleUbuntu.sif
+```
+
+Inside the Singularity shell, create a test file in the mounted output folder:
+
+```sh
+printf 'container output test\n' > /output_dir/test-output.txt
+```
+
+List the mounted output folder from inside the container:
+
+```sh
+ls -l /output_dir
+```
+
+Exit the container shell:
+
+```sh
+exit
+```
+
+Back on the host, the same file should exist outside the workspace:
+
+```sh
+ls -l /home/<username>/example_output
+```
