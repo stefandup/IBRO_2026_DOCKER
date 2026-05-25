@@ -1,0 +1,6 @@
+#! /bin/bash
+
+mkdir -p build
+docker build -t littleubuntu:latest -f .devcontainer/DockerFile .
+docker save littleubuntu:latest -o build/littleubuntu.tar
+singularity build build/LittleUbuntu.sif docker-archive://build/littleubuntu.tar
