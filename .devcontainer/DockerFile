@@ -1,0 +1,32 @@
+FROM ubuntu:24.04
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+RUN apt-get update && apt-get install -y \
+    sudo \
+    bash \
+    git \
+    curl \
+    nano \
+    emacs \
+    ca-certificates \
+    python3 \
+    python3-pip \
+    python3-venv \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN python3 -m venv /usr/local/venv
+
+ENV PATH="/usr/local/venv/bin:$PATH"
+
+RUN pip install --upgrade pip && \
+    pip install nibabel nilearn numpy pandas matplotlib PyQt6
+
+RUN echo 'export PS1="\[\033[01;32m\]\u@LittleUbuntu\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ "' >> /root/.bashrc
+
+RUN mkdir /scripts
+COPY scripts/my_test_script.py /scripts/my_test_script.py
+
+RUN chmod +x /scripts/my_test_script.py
+    
+WORKDIR /workspaces
